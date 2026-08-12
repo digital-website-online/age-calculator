@@ -550,55 +550,210 @@
     }
 
     function calculateResult() {
-        let grid = document.getElementById('resGrid');
-        
-        if (currentTool === 'age') {
-            let dobVal = document.getElementById('dob').value;
-            if(!dobVal) return alert('Please choose your birth date!');
-            let dob = new Date(dobVal);
-            let today = new Date();
-            let y = today.getFullYear() - dob.getFullYear();
-            let m = today.getMonth() - dob.getMonth();
-            let d = today.getDate() - dob.getDate();
-            if (d < 0) { m--; d += 30; }
-            if (m < 0) { y--; m += 12; }
-            
-            grid.innerHTML = `
-                <div class="res-item"><div class="val">${y}</div><div class="lbl">Years</div></div>
-                <div class="res-item"><div class="val">${m}</div><div class="lbl">Months</div></div>
-                <div class="res-item"><div class="val">${d}</div><div class="lbl">Days</div></div>`;
-        } 
-        else if (currentTool === 'diff') {
-            let d1 = new Date(document.getElementById('dob1').value);
-            let d2 = new Date(document.getElementById('dob2').value);
-            if(isNaN(d1) || isNaN(d2)) return alert('Select both dates!');
-            let diffDays = Math.abs(Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24)));
-            let years = Math.floor(diffDays / 365);
-            grid.innerHTML = `
-                <div class="res-item"><div class="val">${years}</div><div class="lbl">Years Difference</div></div>
-                <div class="res-item"><div class="val">${diffDays}</div><div class="lbl">Total Days</div></div>`;
-        }
-        else if (currentTool === 'dog') {
-            let age = parseFloat(document.getElementById('dogAge').value);
-            if(!age) return alert('Enter a valid dog age!');
-            let humanAge = age <= 2 ? age * 10.5 : 21 + ((age - 2) * 4);
-            grid.innerHTML = `<div class="res-item"><div class="val">${humanAge.toFixed(1)}</div><div class="lbl">Human Equivalent Years</div></div>`;
-        }
-        else if (currentTool === 'preg') {
-            let lmp = new Date(document.getElementById('lmp').value);
-            if(isNaN(lmp)) return alert('Select Last Period date!');
-            let due = new Date(lmp);
-            due.setDate(due.getDate() + 280);
-            grid.innerHTML = `<div class="res-item"><div class="val">${due.toDateString()}</div><div class="lbl">Estimated Due Date</div></div>`;
-        }
-        else if (currentTool === 'retire') {
-            let cur = parseInt(document.getElementById('curAge').value);
-            let ret = parseInt(document.getElementById('retAge').value);
-            if(!cur || !ret) return alert('Enter valid age numbers!');
-            grid.innerHTML = `<div class="res-item"><div class="val">${Math.max(0, ret - cur)}</div><div class="lbl">Years Remaining</div></div>`;
+    const grid = document.getElementById('resGrid');
+    const panel = document.getElementById('resPanel');
+
+    if (currentTool === 'age') {
+        const value = document.getElementById('dob').value;
+
+        if (!value) {
+            alert('Please choose your birth date!');
+            return;
         }
 
-        document.getElementById('resPanel').style.display = 'block';
+        const [year, month, day] = value.split('-').map(Number);
+        const dob = new Date(year, month - 1, day);
+        const today = new Date();
+
+        if (dob > today) {
+            alert('Birth date cannot be in the future!');
+            return;
+        }
+
+        let years = today.getFullYear() - dob.getFullYear();
+        let months = today.getMonth() - dob.getMonth();
+        let days = today.getDate() - dob.getDate();
+
+        if (days < 0) {
+            months--;
+            const previousMonth = new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                0
+            );
+            days += previousMonth.getDate();
+        }
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        const totalDays = Math.floor(
+            (today - dob) / (1000 * 60 * 60 * 24)
+        );
+
+        grid.innerHTML = `
+            <div class="res-item">
+                <div class="val">${years}</div>
+                <div class="lbl">Years</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${months}</div>
+                <div class="lbl">Months</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${days}</div>
+                <div class="lbl">Days</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${totalDays.toLocaleString()}</div>
+                <div class="lbl">Total Days</div>
+            </div>
+        `;
+
+    } else if (currentTool === 'diff') {
+
+        const v1 = document.getElementById('dob1').value;
+        const v2 = document.getElementById('dob2').value;
+
+        if (!v1 || !v2) {
+            alert('Please select both dates!');
+            return;
+        }
+
+        const [y1, m1, d1] = v1.split('-').map(Number);
+        const [y2, m2, d2] = v2.split('-').map(Number);
+
+        const date1 = new Date(y1, m1 - 1, d1);
+        const date2 = new Date(y2, m2 - 1, d2);
+
+        const older = date1 <= date2 ? date1 : date2;
+        const newer = date1 <= date2 ? date2 : date1;
+
+        let years = newer.getFullYear() - older.getFullYear();
+        let months = newer.getMonth() - older.getMonth();
+        let days = newer.getDate() - older.getDate();
+
+        if (days < 0) {
+            months--;
+            const previousMonth = new Date(
+                newer.getFullYear(),
+                newer.getMonth(),
+                0
+            );
+            days += previousMonth.getDate();
+        }
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        const totalDays = Math.floor(
+            (newer - older) / (1000 * 60 * 60 * 24)
+        );
+
+        grid.innerHTML = `
+            <div class="res-item">
+                <div class="val">${years}</div>
+                <div class="lbl">Years</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${months}</div>
+                <div class="lbl">Months</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${days}</div>
+                <div class="lbl">Days</div>
+            </div>
+
+            <div class="res-item">
+                <div class="val">${totalDays.toLocaleString()}</div>
+                <div class="lbl">Total Days</div>
+            </div>
+        `;
+
+    } else if (currentTool === 'dog') {
+
+        const age = parseFloat(
+            document.getElementById('dogAge').value
+        );
+
+        if (isNaN(age) || age < 0) {
+            alert('Enter a valid dog age!');
+            return;
+        }
+
+        const humanAge =
+            age <= 2
+                ? age * 10.5
+                : 21 + ((age - 2) * 4);
+
+        grid.innerHTML = `
+            <div class="res-item">
+                <div class="val">${humanAge.toFixed(1)}</div>
+                <div class="lbl">Human Equivalent Years</div>
+            </div>
+        `;
+
+    } else if (currentTool === 'preg') {
+
+        const value = document.getElementById('lmp').value;
+
+        if (!value) {
+            alert('Select Last Period date!');
+            return;
+        }
+
+        const [year, month, day] = value.split('-').map(Number);
+        const lmp = new Date(year, month - 1, day);
+
+        const due = new Date(lmp);
+        due.setDate(due.getDate() + 280);
+
+        grid.innerHTML = `
+            <div class="res-item">
+                <div class="val">
+                    ${due.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}
+                </div>
+                <div class="lbl">Estimated Due Date</div>
+            </div>
+        `;
+
+    } else if (currentTool === 'retire') {
+
+        const cur = parseInt(
+            document.getElementById('curAge').value
+        );
+
+        const ret = parseInt(
+            document.getElementById('retAge').value
+        );
+
+        if (isNaN(cur) || isNaN(ret) || cur < 0 || ret < 0) {
+            alert('Enter valid age numbers!');
+            return;
+        }
+
+        grid.innerHTML = `
+            <div class="res-item">
+                <div class="val">${Math.max(0, ret - cur)}</div>
+                <div class="lbl">Years Remaining</div>
+            </div>
+        `;
+    }
+
+    panel.style.display = 'block';
     }
 
     function toggleMenu() {
