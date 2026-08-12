@@ -14,7 +14,110 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        
+        /* Utility Hub */
+.utility-hub {
+    margin-bottom: 40px;
+}
+
+.hub-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    transition: 0.2s;
+}
+
+.hub-search:focus-within {
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.08);
+}
+
+.hub-search i {
+    color: var(--accent-glow);
+}
+
+.hub-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.hub-search input::placeholder {
+    color: var(--text-secondary);
+}
+
+.hub-title {
+    margin-bottom: 18px;
+}
+
+.hub-title h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.hub-title p {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.hub-card {
+    background: linear-gradient(145deg, var(--card-bg), #0b1220);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.hub-card i {
+    color: var(--accent-glow);
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.hub-card strong {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.hub-card span {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.hub-card:hover {
+    border-color: var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 650px) {
+    .hub-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hub-card {
+        min-height: 115px;
+        padding: 16px;
+    }
+}
         :root {
     --bg-dark: #070b14;
     --card-bg: #0f172a;
