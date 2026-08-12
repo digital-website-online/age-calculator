@@ -945,7 +945,21 @@
     }
 
     switchTool('age');
-</script>
+    function searchTools() {
+    let input = document.getElementById('toolSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.hub-card');
+    
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        if (text.includes(input)) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
 
+</script> 
+    
 </body>
 </html>
