@@ -451,7 +451,61 @@
             <button class="icon-btn" onclick="toggleMenu()" title="Open Menu"><i class="fa-solid fa-bars-staggered"></i></button>
         </div>
     </header>
+    <!-- Utility Hub -->
+<section class="utility-hub">
 
+    <div class="hub-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="toolSearch"
+               placeholder="Search a calculator or tool..."
+               oninput="searchTools()">
+    </div>
+
+    <div class="hub-title">
+        <h2>All Tools</h2>
+        <p>Free calculators and useful online utilities</p>
+    </div>
+
+    <div class="hub-grid">
+
+        <div class="hub-card" onclick="switchTool('age')">
+            <i class="fa-solid fa-calendar-days"></i>
+            <strong>Age & Date</strong>
+            <span>Age, birthday & date tools</span>
+        </div>
+
+        <div class="hub-card">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <strong>Student Tools</strong>
+            <span>GPA, percentage & grades</span>
+        </div>
+
+        <div class="hub-card">
+            <i class="fa-solid fa-calculator"></i>
+            <strong>Math Tools</strong>
+            <span>Math & equation calculators</span>
+        </div>
+
+        <div class="hub-card">
+            <i class="fa-solid fa-coins"></i>
+            <strong>Finance</strong>
+            <span>Profit, discount & interest</span>
+        </div>
+
+        <div class="hub-card">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <strong>Health</strong>
+            <span>BMI & health calculators</span>
+        </div>
+
+        <div class="hub-card">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <strong>Converters</strong>
+            <span>Units, length, weight & more</span>
+        </div>
+
+    </div>
+</section>
     <!-- Main Utility Engine -->
     <div class="main-card">
         <h1 id="toolTitle">Exact Age Calculator</h1>
