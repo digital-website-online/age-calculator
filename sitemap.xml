@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Home Page (Sab se important) -->
+  <!-- Home Page -->
   <url>
-    <loc>https://agepulse.github.io/</loc>
+    <loc>https://digital-website-online.github.io/age-calculator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
 
   <!-- Privacy Policy Page -->
   <url>
-    <loc>https://agepulse.github.io/privacy.html</loc>
+    <loc>https://digital-website-online.github.io/age-calculator/privacy.html</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -18,7 +18,7 @@
 
   <!-- Terms of Service Page -->
   <url>
-    <loc>https://agepulse.github.io/terms.html</loc>
+    <loc>https://digital-website-online.github.io/age-calculator/terms.html</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
