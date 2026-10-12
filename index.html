@@ -2,42 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>SnapFact – Quick Brain Challenges, Quizzes and Memory Games</title>
-<meta id="desc" name="description" content="Play 20 free quick challenges: brain teasers, odd-one-out puzzles, trivia, memory games and light personality quizzes. No sign-up needed.">
-<!-- Replace YOUR-USERNAME with your GitHub username (or your own domain) before publishing -->
-<link rel="canonical" href="https://YOUR-USERNAME.github.io/snapfact/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="SnapFact">
-<meta property="og:title" content="SnapFact – The Internet's Fun Test Lab">
-<meta property="og:description" content="Quick brain challenges, trivia, memory games and light personality quizzes.">
-<meta property="og:url" content="https://YOUR-USERNAME.github.io/snapfact/">
-<meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#0a0e1f">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚡%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IELTS Pro Studio</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip" href="#app">Skip to content</a>
-<header>
- <div class="wrap bar">
-  <a class="logo" href="#/">Snap<b>Fact</b></a>
-  <button id="menu" class="btn" aria-expanded="false" aria-controls="nav-list">Menu</button>
-  <nav aria-label="Main"><ul id="nav-list">
-   <li><a href="#/">Home</a></li>
-   <li><a href="#/browse">All challenges</a></li>
-   <li><a href="#/daily">Daily</a></li>
-   <li><a href="#/about">About</a></li>
-   <li><a href="#/privacy">Privacy</a></li>
-  </ul></nav>
- </div>
-</header>
-<main id="app" class="wrap" tabindex="-1"><noscript><p>SnapFact needs JavaScript to run the challenges.</p></noscript></main>
-<div id="live" class="vh" role="status" aria-live="polite"></div>
-<footer><div class="wrap">
- <p>SnapFact is for entertainment. Results are not scientific or psychological assessments.</p>
- <p><a href="#/about">About</a> · <a href="#/privacy">Privacy</a> · <a href="#/browse">All challenges</a> · Contact: add your email here</p>
-</div></footer>
-<script src="app.js"></script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+  <nav id="nav" class="side" aria-label="Main"></nav>
+  <div class="col">
+    <header class="top"><h1 id="title">Dashboard</h1><span id="streak" class="pill"></span></header>
+    <main id="main" tabindex="-1"></main>
+    <p class="foot">Independent practice tool. Not affiliated with or endorsed by IELTS, the British Council, IDP or Cambridge. Scores here are practice indicators, not official bands.</p>
+  </div>
+</div>
+<div id="live" class="sr" aria-live="polite"></div>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js" defer></script>
 </body>
 </html>
