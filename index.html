@@ -1,322 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#1456c9">
-<title>Block Royale — Classic Puzzle</title>
-<style>
-:root{--blue:#1454c8;--blue2:#078be8;--deep:#17124c;--gold:#ffc52d;--white:#fff;--mint:#21d8bd;--pink:#f43bc6;--shadow:0 7px 0 rgba(25,24,90,.35),0 12px 20px rgba(5,21,75,.22)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:ui-rounded,"Trebuchet MS",system-ui,-apple-system,sans-serif;color:white;background:#1258cc;touch-action:manipulation}
-button{font:inherit;border:0;cursor:pointer;color:inherit;touch-action:manipulation}
-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
-#app{position:relative;width:100%;height:100dvh;min-height:520px;overflow:hidden;background:radial-gradient(ellipse at 50% 20%,rgba(58,132,255,.85),transparent 43%),radial-gradient(ellipse at 50% 95%,rgba(16,191,255,.35),transparent 50%),linear-gradient(160deg,#183bb0 0%,#1265d9 53%,#138de2 100%);isolation:isolate}
-#app:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:radial-gradient(rgba(255,255,255,.6) .65px,transparent .65px);background-size:5px 5px;mask-image:linear-gradient(to bottom,black,transparent 80%);z-index:-1}
-.screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;overflow:hidden}
-.screen.active{display:flex}
-.home{padding:calc(env(safe-area-inset-top) + 26px) 22px calc(env(safe-area-inset-bottom) + 20px);justify-content:flex-start}
-.topline{position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:18px;right:18px;display:flex;justify-content:space-between;align-items:center}
-.pill-icon{width:48px;height:48px;border-radius:16px;background:linear-gradient(#fff,#b9d6ff);color:#2147a5;box-shadow:0 5px 0 #829bd9,0 8px 12px #062b7a55;font-size:24px;display:grid;place-items:center;text-shadow:0 1px white}
-.medal{font-size:13px;font-weight:900;text-align:center;text-shadow:0 2px 2px #15378e}
-.medal span{display:block;font-size:31px;filter:drop-shadow(0 3px 1px #7a4000)}
-.logo{margin-top:clamp(70px,13vh,130px);text-align:center;position:relative;filter:drop-shadow(0 8px 0 rgba(15,36,112,.38))}
-.logo-title{font-weight:1000;font-size:clamp(46px,12vw,74px);line-height:.9;letter-spacing:-3px;white-space:nowrap;transform:rotate(-2deg);font-style:italic}
-.logo-title span{display:inline-block;-webkit-text-stroke:1px rgba(255,255,255,.22);text-shadow:0 4px 0 rgba(65,32,110,.38),0 8px 9px #05277d55}
-.logo-title .b1{color:#ffb21d}.logo-title .b2{color:#24d4ff}.logo-title .b3{color:#ff3b54}.logo-title .b4{color:#ffda22}.logo-title .b5{color:#e957f5}
-.logo-sub{margin-top:12px;font-size:clamp(22px,6vw,36px);font-weight:1000;font-style:italic;letter-spacing:1px;color:#22e3ff;text-shadow:0 3px 0 #0955c6}
-.tagline{font-size:12px;font-weight:900;letter-spacing:3px;color:#b9e8ff;margin-top:10px}
-.daily{width:min(100%,390px);height:92px;margin-top:clamp(18px,4vh,35px);border:2px solid #ffffff72;border-radius:17px;background:linear-gradient(120deg,#f5f4ff,#d5e4ff);box-shadow:0 5px 0 #7d9cda,0 12px 16px #062a7850;color:#3155a2;display:flex;align-items:center;justify-content:space-around;flex-shrink:0}
-.daily-label{font-size:clamp(12px,3.6vw,16px);font-weight:1000;line-height:1.3}
-.daily-icon{font-size:43px;filter:drop-shadow(0 3px 0 #c08a22)}
-.daily-count{font-size:25px;font-weight:1000}
-.daily-check{font-size:20px;color:#a7b2ce}
-.menu-buttons{width:min(100%,390px);display:grid;gap:14px;margin-top:clamp(25px,5vh,45px)}
-.menu-btn{height:75px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:17px;font-size:clamp(21px,5.8vw,29px);font-weight:1000;font-style:italic;letter-spacing:.2px;text-shadow:0 2px 2px #6937004a;border:2px solid #ffffff45;box-shadow:0 6px 0 rgba(18,39,105,.42),0 11px 16px #062e7850;transition:transform .12s,filter .12s}
-.menu-btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(18,39,105,.42);filter:brightness(1.06)}
-.menu-btn .btn-ico{font-size:33px;font-style:normal;text-shadow:0 2px 2px #3333}
-.adventure{background:linear-gradient(#ffcf48,#ff920c 85%);color:white}
-.classic{background:linear-gradient(#38e8c4,#04b89e 85%);color:white}
-.more{background:linear-gradient(#34d9f8,#0794e2 85%);color:white;position:relative}
-.more:after{content:"";position:absolute;right:-4px;top:-7px;width:19px;height:19px;border-radius:50%;background:#ff3d3d;box-shadow:0 2px 3px #123}
-.mini-games{display:flex;gap:32px;margin-top:auto;padding-bottom:5px}
-.mini-game{width:100px;text-align:center;font-size:12px;font-weight:900}
-.mini-art{width:74px;height:74px;margin:0 auto 5px;border-radius:50%;border:4px solid #a8d7ff;background:linear-gradient(135deg,#fff,#d8e7ff);box-shadow:0 5px 0 #3854b7,0 8px 12px #062c8055;color:#263c8b;display:grid;place-items:center;font-size:36px}
-.mini-game span{display:inline-block;padding:4px 11px;border-radius:14px;background:linear-gradient(#698bff,#324bd1);box-shadow:0 3px 0 #18328d;white-space:nowrap}
-.game{padding:calc(env(safe-area-inset-top) + 12px) 12px calc(env(safe-area-inset-bottom) + 12px);justify-content:flex-start}
-.game-top{width:100%;display:flex;align-items:center;justify-content:space-between;max-width:520px}
-.small-btn{width:43px;height:43px;border-radius:14px;background:linear-gradient(#fff,#bdd9ff);color:#24489b;box-shadow:0 4px 0 #6d89d1;font-size:23px;font-weight:900}
-.game-stat{display:flex;align-items:center;gap:9px;color:#ffe04b;font-size:clamp(18px,5vw,25px);font-weight:1000;text-shadow:0 3px 0 #8e4c1a}
-.best{font-size:11px;color:#d6eaff;font-weight:800;text-align:center;letter-spacing:.5px;margin-top:2px;text-shadow:0 1px 2px #183d8e}
-.settings-btn{font-size:22px}
-.score-area{margin-top:clamp(20px,5vh,44px);text-align:center;min-height:92px}
-.score{font-size:clamp(48px,13vw,68px);line-height:1;font-weight:1000;letter-spacing:1px;text-shadow:0 5px 0 #17419b,0 8px 14px #082a7855;font-variant-numeric:tabular-nums}
-.score-caption{font-size:11px;font-weight:900;letter-spacing:3px;color:#b9ddff;margin-top:8px}
-.board-wrap{width:min(calc(100vw - 34px),min(80vh,500px));width:min(calc(100vw - 34px),calc(100dvh - 330px),500px);aspect-ratio:1;max-height:calc(100dvh - 320px);margin:clamp(8px,2vh,18px) auto 0;padding:6px;border-radius:22px;background:linear-gradient(145deg,#29205c,#100d37);box-shadow:0 7px 0 #0a164d,0 13px 20px #061d6344,inset 0 2px 0 #ffffff24;position:relative;touch-action:none}
-.board{width:100%;height:100%;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);gap:2px;border-radius:15px;overflow:hidden;background:#17133e;touch-action:none}
-.cell{position:relative;border-radius:4px;background:linear-gradient(145deg,#211a50,#19143f);border:1px solid #100c2c80;min-width:0;min-height:0;transition:background .12s}
-.cell.filled{border:1px solid #ffffff24;box-shadow:inset 0 2px 0 #ffffff52,inset 0 -3px 0 #00000018,0 2px 2px #05052288;overflow:hidden;animation:popin .18s cubic-bezier(.2,1.5,.5,1) both}
-.cell.filled:before{content:"";position:absolute;left:12%;top:7%;width:40%;height:12%;border-radius:100%;background:#ffffff66;filter:blur(.3px)}
-.cell.preview{background:#55ffe988!important;box-shadow:inset 0 0 0 2px #e4fff9}
-.cell.invalid{background:#ff4b5d88!important;animation:nudge .18s linear}
-@keyframes popin{from{transform:scale(.68);filter:brightness(1.8)}to{transform:scale(1);filter:brightness(1)}}
-@keyframes nudge{25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
-.cell.clearing{animation:clearpop .22s ease-in forwards}
-@keyframes clearpop{to{transform:scale(.15) rotate(12deg);opacity:0;filter:brightness(2)}}
-.tray-label{margin:clamp(14px,2.5vh,24px) 0 9px;font-size:11px;font-weight:1000;letter-spacing:3px;color:#c7e8ff;text-shadow:0 2px 3px #103d91}
-.tray{width:min(100%,470px);display:grid;grid-template-columns:repeat(3,1fr);gap:10px;min-height:94px;align-items:center}
-.piece-slot{height:95px;display:grid;place-items:center;border-radius:15px;background:rgba(6,24,94,.16);border:1px solid #ffffff16;transition:background .15s,opacity .15s;touch-action:none;user-select:none}
-.piece-slot.selected{background:#ffffff25;border-color:#b6f5ff;box-shadow:inset 0 0 0 2px #ffffff28}
-.piece-slot.used{opacity:.18;filter:grayscale(1)}
-.piece{display:grid;gap:2px;touch-action:none;pointer-events:none}
-.piece-cell{width:clamp(16px,4.6vw,24px);height:clamp(16px,4.6vw,24px);border-radius:5px;position:relative;box-shadow:inset 0 2px 0 #ffffff65,inset 0 -2px 0 #00000020,0 2px 2px #08072c66;border:1px solid #ffffff22}
-.piece-cell:after{content:"";position:absolute;left:15%;top:10%;width:36%;height:15%;border-radius:99px;background:#ffffff70}
-.piece-cell.empty{visibility:hidden}
-.game-hint{font-size:11px;color:#c3e5ff;font-weight:800;text-align:center;margin-top:9px;min-height:15px}
-.bottom-actions{display:flex;gap:10px;margin-top:auto;padding-top:8px}
-.action-btn{border-radius:13px;padding:10px 17px;background:linear-gradient(#fff,#d9e7ff);color:#284b9a;font-size:12px;font-weight:1000;box-shadow:0 4px 0 #7993d2}
-.overlay{position:absolute;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:22px;background:#071747a8;backdrop-filter:blur(8px)}
-.overlay.show{display:flex}
-.modal{width:min(100%,350px);padding:25px 22px 22px;border-radius:24px;background:linear-gradient(145deg,#fff,#dbe8ff);color:#25418e;text-align:center;border:2px solid #ffffff;box-shadow:0 10px 0 #4b69b8,0 25px 50px #07194e66;animation:modalin .25s cubic-bezier(.2,1.4,.4,1)}
-@keyframes modalin{from{transform:scale(.8) translateY(15px);opacity:0}to{transform:scale(1);opacity:1}}
-.modal h2{margin:0 0 9px;font-size:28px;color:#2343a1}
-.modal p{font-size:14px;line-height:1.5;color:#5c6ea7}
-.modal-actions{display:grid;gap:10px;margin-top:19px}
-.modal-btn{padding:13px;border-radius:13px;font-weight:1000;background:linear-gradient(#ffcf4d,#ff9610);color:white;box-shadow:0 4px 0 #b95e0a;text-shadow:0 1px #a85813}
-.modal-btn.secondary{background:linear-gradient(#39e5c3,#04b69c);box-shadow:0 4px 0 #078a83}
-.modal-btn.tertiary{background:#dbe5ff;color:#31519d;box-shadow:0 4px 0 #9cb2e7;text-shadow:none}
-#particles{position:absolute;inset:0;pointer-events:none;z-index:30;overflow:hidden}
-.particle{position:absolute;width:8px;height:8px;border-radius:3px;animation:burst .65s ease-out forwards;box-shadow:0 0 10px currentColor}
-@keyframes burst{to{transform:translate(var(--dx),var(--dy)) rotate(250deg) scale(.2);opacity:0}}
-.float-score{position:absolute;z-index:32;font-size:22px;font-weight:1000;color:#fff45a;text-shadow:0 3px 0 #b35c14;pointer-events:none;animation:floatup .75s ease-out forwards}
-@keyframes floatup{to{transform:translateY(-55px) scale(1.25);opacity:0}}
-@media(max-height:700px){.home{padding-top:calc(env(safe-area-inset-top) + 10px)}.logo{margin-top:66px}.logo-title{font-size:48px}.logo-sub{font-size:24px;margin-top:7px}.tagline{margin-top:5px}.daily{height:70px;margin-top:13px}.daily-icon{font-size:34px}.menu-buttons{gap:9px;margin-top:17px}.menu-btn{height:58px;font-size:22px}.mini-games{gap:20px}.mini-art{width:55px;height:55px;font-size:28px}.mini-game{font-size:10px}.score-area{margin-top:12px;min-height:66px}.score{font-size:48px}.board-wrap{width:min(calc(100vw - 34px),calc(100dvh - 265px),430px);margin-top:6px}.tray-label{margin:10px 0 4px}.tray{min-height:72px}.piece-slot{height:73px}.piece-cell{width:clamp(14px,4vw,20px);height:clamp(14px,4vw,20px)}}
-@media(min-width:600px){#app{max-width:520px;margin:auto;box-shadow:0 0 50px #07194c66}.board-wrap{width:min(440px,calc(100dvh - 340px))}}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#10132b">
+<meta name="description" content="Block Royale — a polished, strategic block puzzle. Place pieces, clear rows and columns, chain combos and beat your best score.">
+<title>Block Royale — Neon Puzzle</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-  <div id="particles"></div>
-  <section id="homeScreen" class="screen home active">
-    <div class="topline">
-      <button class="pill-icon" id="homeStats" aria-label="Best score">🏆</button>
-      <button class="pill-icon" id="settingsOpen" aria-label="Settings">⚙️</button>
-    </div>
-    <div class="logo" aria-label="Block Royale">
-      <div class="logo-title"><span class="b1">B</span><span class="b2">L</span><span class="b3">O</span><span class="b4">C</span><span class="b5">K</span></div>
-      <div class="logo-sub">ROYAL BLAST</div>
-      <div class="tagline">THE COLOR BLOCK CHALLENGE</div>
-    </div>
-    <div class="daily">
-      <div class="daily-label">DAILY STREAK<br><span style="font-size:11px;color:#7388bf">Keep your brain blazing!</span></div>
-      <div class="daily-icon">👑</div><div class="daily-count" id="streakCount">× 1</div><div class="daily-check">✓</div>
-    </div>
-    <div class="menu-buttons">
-      <button class="menu-btn adventure" id="adventureBtn"><span class="btn-ico">🧭</span> Adventure <span style="font-size:10px;background:#d85f0d;border-radius:7px;padding:4px 6px;font-style:normal">SOON</span></button>
-      <button class="menu-btn classic" id="classicBtn"><span class="btn-ico">∞</span> Classic</button>
-      <button class="menu-btn more" id="moreBtn"><span class="btn-ico">🎮</span> More Games</button>
-    </div>
-    <div class="mini-games">
-      <div class="mini-game"><div class="mini-art">🌀</div><span>Maze Rush · Soon</span></div>
-      <div class="mini-game"><div class="mini-art">⭕</div><span>Ring Twist · Soon</span></div>
-    </div>
-  </section>
+<div class="app-shell">
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <header class="topbar">
+    <button class="icon-btn" id="homeBtn" aria-label="Home">⌂</button>
+    <div class="brand"><span class="brand-mark">✦</span><div><div class="brand-title">BLOCK <b>ROYALE</b></div><div class="brand-sub">NEON PUZZLE CLUB</div></div></div>
+    <button class="icon-btn" id="soundBtn" aria-label="Toggle sound">♫</button>
+  </header>
 
-  <section id="gameScreen" class="screen game">
-    <div class="game-top">
-      <button class="small-btn" id="backHome" aria-label="Back to home">‹</button>
-      <div><div class="game-stat"><span>👑</span><span id="scoreTop">0</span></div><div class="best">BEST <span id="bestTop">0</span></div></div>
-      <button class="small-btn settings-btn" id="gameSettings" aria-label="Game settings">⚙</button>
+  <main id="homeScreen" class="screen home-screen">
+    <div class="hero-orbit"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-blocks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="eyebrow"><span class="live-dot"></span> YOUR NEXT HIGH SCORE STARTS HERE</div>
+    <h1>Think in<br><span>blocks.</span></h1>
+    <p class="hero-copy">One board. Three pieces. Infinite ways to outsmart yourself.</p>
+    <div class="home-stats">
+      <div><small>PERSONAL BEST</small><strong id="homeBest">0</strong></div>
+      <div><small>BEST COMBO</small><strong id="homeCombo">—</strong></div>
+      <div><small>GAMES PLAYED</small><strong id="homeGames">0</strong></div>
     </div>
-    <div class="score-area"><div class="score" id="scoreBig">0</div><div class="score-caption" id="scoreCaption">CLASSIC SCORE</div></div>
-    <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="8 by 8 block puzzle board"></div></div>
-    <div class="tray-label">CHOOSE A BLOCK · PLACE IT ON THE BOARD</div>
-    <div class="tray" id="tray"></div>
-    <div class="game-hint" id="gameHint">Tap a piece, then tap the board to place it.</div>
-    <div class="bottom-actions"><button class="action-btn" id="soundBtn">🔊 Sound ON</button><button class="action-btn" id="restartBtn">↻ New Game</button></div>
-  </section>
+    <button class="primary-btn" id="playBtn"><span>▶</span> PLAY CLASSIC <b>↗</b></button>
+    <button class="secondary-btn" id="dailyBtn"><span>✦</span> DAILY CHALLENGE <em>SOON</em></button>
+    <div class="home-foot"><span>● NO TIMER</span><span>● OFFLINE READY</span><span>● PURE STRATEGY</span></div>
+    <div class="mini-note">ADVENTURE MODE <b>IN DEVELOPMENT</b></div>
+  </main>
 
-  <div class="overlay" id="modalOverlay">
-    <div class="modal" id="modalBox">
-      <h2 id="modalTitle">Game paused</h2><p id="modalText">Take a breather.</p>
-      <div class="modal-actions" id="modalActions"></div>
+  <main id="gameScreen" class="screen game-screen hidden">
+    <div class="game-heading">
+      <div><div class="eyebrow">CLASSIC MODE</div><h2>Make it <span>count.</span></h2></div>
+      <button class="restart-btn" id="restartBtn" aria-label="Restart game">↻ <span>Restart</span></button>
     </div>
-  </div>
+    <div class="score-row">
+      <div class="score-card current-score"><small>YOUR SCORE</small><strong id="score">0</strong><div class="score-glint"></div></div>
+      <div class="score-card"><small>PERSONAL BEST</small><strong id="best">0</strong><div class="best-tag">TOP RUN</div></div>
+    </div>
+    <div class="status-row"><div class="status-pill"><span class="status-dot"></span><span id="statusText">Place a piece to begin</span></div><div class="combo-pill" id="comboPill">COMBO ×0</div></div>
+    <section class="board-wrap" aria-label="Puzzle board">
+      <div class="board-frame"><div id="board" class="board" role="grid" aria-label="8 by 8 block puzzle board"></div><div id="boardFx" class="board-fx"></div></div>
+      <div class="board-caption"><span>8 × 8 GRID</span><span id="placedCount">0 MOVES</span><span>ROW + COLUMN CLEAR</span></div>
+    </section>
+    <section class="tray-section">
+      <div class="tray-head"><div><small>NEXT PIECES</small><h3>Choose your move</h3></div><div class="tray-hint">Tap a piece, then a spot<br>or drag it onto the board</div></div>
+      <div id="tray" class="tray"></div>
+    </section>
+    <div class="tool-row">
+      <button class="tool-btn" id="hintBtn"><span>✧</span><div><b>HINT</b><small>Find a fit</small></div></button>
+      <button class="tool-btn" id="undoBtn" disabled><span>↶</span><div><b>UNDO</b><small>Last move</small></div><i class="tool-count" id="undoCount">0</i></button>
+      <button class="tool-btn" id="pauseBtn"><span>Ⅱ</span><div><b>PAUSE</b><small>Take a break</small></div></button>
+    </div>
+    <div class="game-footer"><span>✦ PLAN AHEAD</span><span>EVERY CELL COUNTS</span><span id="dealerLabel">SMART DEALER ON</span></div>
+  </main>
 </div>
-<script>
-(() => {
-'use strict';
-const $ = id => document.getElementById(id);
-const COLORS = [
-  {name:'pink',top:'#ff4fda',mid:'#e718b6',bottom:'#a9097c'},
-  {name:'cyan',top:'#35f3dc',mid:'#06c7b4',bottom:'#008b9c'},
-  {name:'red',top:'#ff6559',mid:'#f32d36',bottom:'#a90d2b'},
-  {name:'yellow',top:'#fff04d',mid:'#ffc91a',bottom:'#c78000'},
-  {name:'orange',top:'#ffb144',mid:'#ff8314',bottom:'#c94a08'},
-  {name:'blue',top:'#48b9ff',mid:'#1478ff',bottom:'#1243b5'},
-  {name:'green',top:'#77f34b',mid:'#31c91b',bottom:'#16800b'},
-  {name:'purple',top:'#c18aff',mid:'#8b48ef',bottom:'#5120a8'}
-];
-const SHAPES = [
- [[0,0]], [[0,0],[0,1]], [[0,0],[1,0]], [[0,0],[0,1],[0,2]],
- [[0,0],[1,0],[2,0]], [[0,0],[0,1],[1,0],[1,1]],
- [[0,0],[0,1],[0,2],[1,0]], [[0,0],[1,0],[2,0],[2,1]],
- [[0,0],[0,1],[0,2],[1,1]], [[0,1],[1,0],[1,1],[1,2]],
- [[0,0],[1,0],[1,1],[2,1]], [[0,1],[1,0],[1,1],[2,0]],
- [[0,0],[0,1],[0,2],[0,3]], [[0,0],[1,0],[2,0],[3,0]],
- [[0,0],[0,1],[0,2],[0,3],[0,4]], [[0,0],[1,0],[2,0],[3,0],[4,0]],
- [[0,0],[0,1],[0,2],[1,2],[2,2]], [[0,0],[1,0],[2,0],[2,1],[2,2]],
- [[0,0],[0,1],[1,0],[1,1],[2,0],[2,1]], [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]],
- [[0,0],[0,1],[1,0],[1,1],[2,0],[2,1],[2,2]],
- [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-];
-let board = [], tray = [], score = 0, best = Number(localStorage.getItem('blockRoyaleBest')||0);
-let selected = -1, soundOn = true, combo = 0, gameOver = false, busy = false, audioCtx = null;
-let pointerStart = null;
-const boardEl=$('board'), trayEl=$('tray'), overlay=$('modalOverlay');
-$('bestTop').textContent=best;
-function showScreen(which){$('homeScreen').classList.toggle('active',which==='home');$('gameScreen').classList.toggle('active',which==='game')}
-function rand(n){return Math.floor(Math.random()*n)}
-function cloneShape(s){return s.map(p=>[p[0],p[1]])}
-function newPiece(){let shape=cloneShape(SHAPES[rand(SHAPES.length)]);return {shape,color:rand(COLORS.length),used:false}}
-function newGame(){
- board=Array.from({length:8},()=>Array(8).fill(-1));score=0;combo=0;selected=-1;gameOver=false;busy=false;
- tray=[newPiece(),newPiece(),newPiece()];
- $('scoreBig').textContent='0';$('scoreTop').textContent='0';$('scoreCaption').textContent='CLASSIC SCORE';$('bestTop').textContent=best;
- renderBoard();renderTray();$('gameHint').textContent='Tap a piece, then tap the board to place it.';
-}
-function colorStyle(c){const v=COLORS[c];return `linear-gradient(145deg,${v.top} 0%,${v.mid} 52%,${v.bottom} 100%)`}
-function renderBoard(){
- boardEl.innerHTML='';
- for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-  const cell=document.createElement('div');cell.className='cell';cell.dataset.r=r;cell.dataset.c=c;cell.setAttribute('role','gridcell');
-  if(board[r][c]>=0){cell.classList.add('filled');cell.style.background=colorStyle(board[r][c]);}
-  cell.addEventListener('pointerdown',e=>{e.preventDefault();if(selected<0||busy||gameOver)return;placeSelected(+cell.dataset.r,+cell.dataset.c)});
-  boardEl.appendChild(cell);
- }
-}
-function dimensions(shape){return {h:Math.max(...shape.map(p=>p[0]))+1,w:Math.max(...shape.map(p=>p[1]))+1}}
-function renderTray(){
- trayEl.innerHTML='';
- tray.forEach((piece,i)=>{
-  const slot=document.createElement('button');slot.className='piece-slot'+(piece.used?' used':'')+(selected===i?' selected':'');slot.setAttribute('aria-label',`Piece ${i+1}${piece.used?', used':''}`);
-  if(!piece.used){
-   const {h,w}=dimensions(piece.shape), grid=document.createElement('div');grid.className='piece';grid.style.gridTemplateColumns=`repeat(${w},auto)`;grid.style.gridTemplateRows=`repeat(${h},auto)`;
-   const occupied=new Set(piece.shape.map(p=>p.join(',')));
-   for(let r=0;r<h;r++)for(let c=0;c<w;c++){const el=document.createElement('div');el.className='piece-cell'+(occupied.has(`${r},${c}`)?'':' empty');if(occupied.has(`${r},${c}`))el.style.background=colorStyle(piece.color);grid.appendChild(el)}
-   slot.appendChild(grid);
-   slot.addEventListener('pointerdown',e=>{e.preventDefault();if(gameOver||busy)return;selected=i;renderTray();$('gameHint').textContent='Selected! Tap an empty board position.';playTone(420,.045);});
-   slot.addEventListener('dblclick',()=>{selected=i;renderTray()});
-  }else slot.innerHTML='<span style="font-size:24px;opacity:.6">✓</span>';
-  trayEl.appendChild(slot);
- });
-}
-function canPlace(shape,r,c){
- return shape.every(([dr,dc])=>r+dr>=0&&r+dr<8&&c+dc>=0&&c+dc<8&&board[r+dr][c+dc]===-1);
-}
-function markPreview(r,c){
- document.querySelectorAll('.cell.preview,.cell.invalid').forEach(el=>el.classList.remove('preview','invalid'));
- if(selected<0||tray[selected]?.used)return;
- const shape=tray[selected].shape,ok=canPlace(shape,r,c);
- shape.forEach(([dr,dc])=>{const rr=r+dr,cc=c+dc;if(rr>=0&&rr<8&&cc>=0&&cc<8){const el=boardEl.children[rr*8+cc];el.classList.add(ok?'preview':'invalid')}});
-}
-function placeSelected(r,c){
- if(selected<0||!tray[selected]||tray[selected].used||busy)return;
- const piece=tray[selected];
- if(!canPlace(piece.shape,r,c)){markPreview(r,c);$('gameHint').textContent='That spot is blocked — try another place.';playTone(150,.07);setTimeout(()=>document.querySelectorAll('.cell.invalid').forEach(e=>e.classList.remove('invalid')),220);return}
- const placed=piece.shape.map(([dr,dc])=>[r+dr,c+dc]);
- placed.forEach(([rr,cc])=>board[rr][cc]=piece.color);
- piece.used=true;selected=-1;score+=placed.length;
- renderBoard();
- const fullRows=[],fullCols=[];
- for(let rr=0;rr<8;rr++)if(board[rr].every(v=>v>=0))fullRows.push(rr);
- for(let cc=0;cc<8;cc++)if(board.every(row=>row[cc]>=0))fullCols.push(cc);
- const clearing=new Set();
- fullRows.forEach(rr=>{for(let cc=0;cc<8;cc++)clearing.add(rr*8+cc)});
- fullCols.forEach(cc=>{for(let rr=0;rr<8;rr++)clearing.add(rr*8+cc)});
- if(clearing.size){
-  combo++;score+=clearing.size*10+Math.max(0,clearing.size-8)*4+(fullRows.length+fullCols.length-1)*30;
-  const cells=[...clearing].map(i=>boardEl.children[i]);cells.forEach(el=>el.classList.add('clearing'));
-  burstAt(boardEl.getBoundingClientRect().left+boardEl.clientWidth/2,boardEl.getBoundingClientRect().top+boardEl.clientHeight/2);
-  playTone(620,.09);setTimeout(()=>{clearing.forEach(i=>{board[Math.floor(i/8)][i%8]=-1});afterPlace(placed.length,fullRows.length+fullCols.length)},230);
- }else{combo=0;playTone(300,.04);afterPlace(placed.length,0)}
- updateScore();
-}
-function afterPlace(cells,lines){
- if(gameOver)return;
- renderBoard();
- if(lines>0){$('gameHint').textContent=lines>1?`SUPER CLEAR! ${lines} lines · Combo ×${combo}`:'Line clear! Keep the combo going.';floatText(lines>1?`COMBO ×${combo}`:'NICE!',boardEl.getBoundingClientRect().left+boardEl.clientWidth/2,boardEl.getBoundingClientRect().top+30)}
- if(tray.every(p=>p.used)){tray=[newPiece(),newPiece(),newPiece()];selected=-1;renderTray()}
- if(!tray.some(p=>!p.used&&hasAnyMove(p.shape))){gameOver=true;showGameOver();return}
- renderTray();
-}
-function hasAnyMove(shape){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(canPlace(shape,r,c))return true;return false}
-function updateScore(){
- $('scoreBig').textContent=score.toLocaleString();$('scoreTop').textContent=score.toLocaleString();
- if(score>best){best=score;localStorage.setItem('blockRoyaleBest',best);$('bestTop').textContent=best}
-}
-function floatText(text,x,y){const el=document.createElement('div');el.className='float-score';el.textContent=text;el.style.left=(x-35)+'px';el.style.top=(y-12)+'px';$('particles').appendChild(el);setTimeout(()=>el.remove(),800)}
-function burstAt(x,y){
- const host=$('particles');for(let i=0;i<24;i++){const el=document.createElement('i');el.className='particle';el.style.left=x+'px';el.style.top=y+'px';el.style.background=COLORS[rand(COLORS.length)].top;el.style.color=el.style.background;const a=Math.PI*2*i/24,d=25+Math.random()*90;el.style.setProperty('--dx',Math.cos(a)*d+'px');el.style.setProperty('--dy',Math.sin(a)*d+'px');host.appendChild(el);setTimeout(()=>el.remove(),700)}
-}
-function playTone(freq,duration){if(!soundOn)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.055,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}}
-function showModal(title,text,buttons){
- $('modalTitle').textContent=title;$('modalText').textContent=text;$('modalActions').innerHTML='';
- buttons.forEach(b=>{const el=document.createElement('button');el.className='modal-btn '+(b.kind||'');el.textContent=b.label;el.addEventListener('click',()=>{hideModal();b.action()});$('modalActions').appendChild(el)});
- overlay.classList.add('show');
-}
-function hideModal(){overlay.classList.remove('show')}
-function showGameOver(){showModal('BOARD FULL!',`Nice run! You scored ${score.toLocaleString()} points. ${score>=best?'New best score!':'Your best is '+best.toLocaleString()+'.'}`,[
- {label:'Play Again',action:()=>newGame()},
- {label:'Main Menu',kind:'secondary',action:()=>showScreen('home')}
-]);playTone(190,.25)}
-function openSettings(){showModal('GAME SETTINGS','Make yourself comfortable.',[
- {label:`Sound: ${soundOn?'ON':'OFF'}`,action:()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊 Sound ON':'🔇 Sound OFF';openSettings()}},
- {label:'Resume / Close',kind:'secondary',action:()=>{}},
- {label:'Restart Game',kind:'tertiary',action:()=>newGame()}
-])}
-$('classicBtn').addEventListener('click',()=>{newGame();showScreen('game')});
-$('backHome').addEventListener('click',()=>{showScreen('home')});
-$('settingsOpen').addEventListener('click',openSettings);
-$('gameSettings').addEventListener('click',openSettings);
-$('homeStats').addEventListener('click',()=>showModal('YOUR BEST SCORE',`Your personal best is ${best.toLocaleString()} points. Keep going!`,[{label:'Let’s Play',action:()=>{newGame();showScreen('game')}},{label:'Close',kind:'secondary',action:()=>{}}]));
-$('adventureBtn').addEventListener('click',()=>showModal('ADVENTURE MODE', 'A brand-new journey is being crafted. Adventure mode is coming soon!',[{label:'Sounds Great!',action:()=>{}},{label:'Play Classic',kind:'secondary',action:()=>{newGame();showScreen('game')}}]));
-$('moreBtn').addEventListener('click',()=>showModal('MORE GAMES','More mini-games are on the way. For now, master Classic mode!',[{label:'Play Classic',action:()=>{newGame();showScreen('game')}},{label:'Close',kind:'secondary',action:()=>{}}]));
-$('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊 Sound ON':'🔇 Sound OFF';if(soundOn)playTone(520,.06)});
-$('restartBtn').addEventListener('click',()=>showModal('NEW GAME?','Start a fresh board? Your best score will be saved.',[{label:'Start New Game',action:()=>newGame()},{label:'Keep Playing',kind:'secondary',action:()=>{}}]));
-overlay.addEventListener('click',e=>{if(e.target===overlay)hideModal()});
 
-// Pointer dragging: piece can be selected then placed by tapping, or dragged directly onto a board cell.
-let dragPiece=-1,dragStart=null;
-trayEl.addEventListener('pointerdown',e=>{
- const slot=e.target.closest('.piece-slot');if(!slot)return;
- const idx=[...trayEl.children].indexOf(slot);if(idx<0||tray[idx]?.used)return;
- dragPiece=idx;dragStart={x:e.clientX,y:e.clientY};selected=idx;renderTray();
-});
-document.addEventListener('pointerup',e=>{
- if(dragPiece<0)return;
- const dx=Math.abs(e.clientX-dragStart.x),dy=Math.abs(e.clientY-dragStart.y);
- if(dx+dy>12){
-  const target=document.elementFromPoint(e.clientX,e.clientY);
-  const cell=target?.closest('.cell');
-  if(cell&&$('gameScreen').classList.contains('active'))placeSelected(+cell.dataset.r,+cell.dataset.c);
- }
- dragPiece=-1;dragStart=null;
-});
-boardEl.addEventListener('pointermove',e=>{
- if(selected<0)return;const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('.cell');
- if(el)markPreview(+el.dataset.r,+el.dataset.c);
-});
-boardEl.addEventListener('pointerleave',()=>document.querySelectorAll('.cell.preview,.cell.invalid').forEach(el=>el.classList.remove('preview','invalid')));
-document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){hideModal();selected=-1;renderTray()}
- if($('gameScreen').classList.contains('active')&&!overlay.classList.contains('show')){
-  if(['1','2','3'].includes(e.key)){const idx=+e.key-1;if(tray[idx]&&!tray[idx].used){selected=idx;renderTray()}}
-  if(e.key.toLowerCase()==='r')newGame();
- }
-});
-$('streakCount').textContent='× 1';
-})();
-</script>
+<div id="modalLayer" class="modal-layer hidden">
+  <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-symbol" id="modalSymbol">✦</div><div class="eyebrow" id="modalEyebrow">RUN COMPLETE</div>
+    <h2 id="modalTitle">Nice run.</h2><p id="modalText">Every move makes you sharper.</p>
+    <div id="modalStats" class="modal-stats"></div>
+    <div id="modalActions" class="modal-actions"></div>
+  </section>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
 </body>
 </html>
